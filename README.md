@@ -20,7 +20,7 @@ Workflow para n8n que captura leads vindos de formulários web e dispara mensage
 | Espanhol  | +595       |
 | Francês   | +33        |
 | Alemão    | +49        |
-| Italiano  | (default +55) |
+| Brasil  | (default +55) |
 
 ## Configuração
 
