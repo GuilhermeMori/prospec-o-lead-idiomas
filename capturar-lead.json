@@ -1,0 +1,618 @@
+{
+  "name": "Formulario - Idiomas copy",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "\n\n  ## IDIOMAS\n",
+        "height": 107.66415059237859,
+        "width": 229.23247827861206
+      },
+      "id": "00000000-0000-0000-0000-000000000001",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-1264, 304]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[nome]\"] }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[email]\"] }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json[\"mauticform[telefone]\"] }}"
+            },
+            {
+              "name": "city",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[cidade]\"] }}"
+            },
+            {
+              "name": "numberTeam",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[equipe]\"] }}"
+            },
+            {
+              "name": "origin",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[origin]\"] }}"
+            },
+            {
+              "name": "form",
+              "value": "={{ $node[\"Formulario - Site9\"].json.body[\"mauticform[form]\"] }}"
+            },
+            {
+              "name": "company",
+              "value": "={{ $json.company }}"
+            },
+            {
+              "name": "inbox_id",
+              "value": "={{ $json.inbox_id }}"
+            },
+            {
+              "name": "utm_source",
+              "value": "={{ $('Verificar utm campanha9').item.json.utmSource }}"
+            },
+            {
+              "name": "utm_medium",
+              "value": "={{ $('Verificar utm campanha9').item.json.utmMedium }}"
+            },
+            {
+              "name": "utm_campaign",
+              "value": "={{ $('Verificar utm campanha9').item.json.utmCampaign }}"
+            },
+            {
+              "name": "utm_term",
+              "value": "={{ $('Verificar utm campanha9').item.json.utmTerm }}"
+            },
+            {
+              "name": "conteudo_mensagem",
+              "value": "={{ $('content - idioma').item.json.content }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "userId"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000002",
+      "name": "Dados Usuario9",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [32, 320]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "SEU_WEBHOOK_PATH_AQUI",
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000003",
+      "name": "Formulario - Site9",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [-976, 320],
+      "webhookId": "SEU_WEBHOOK_ID_AQUI"
+    },
+    {
+      "parameters": {
+        "jsCode": "const url = $input.first().json.body[\"URL da página\"]\n\nconst utmSourceRegex = /utm_source=([^&]+)/;\nconst utmSourceMatch = url.match(utmSourceRegex);\nconst utmSource = utmSourceMatch ? utmSourceMatch[1] : null;\n\nconst utmMediumRegex = /utm_medium=([^&]+)/;\nconst utmMediumMatch = url.match(utmMediumRegex);\nconst utmMedium = utmMediumMatch ? decodeURIComponent(utmMediumMatch[1]) : null;\n\nconst utmCampaignRegex = /utm_campaign=([^&]+)/;\nconst utmCampaignMatch = url.match(utmCampaignRegex);\nconst utmCampaign = utmCampaignMatch ? decodeURIComponent(utmCampaignMatch[1]) : null;\n\nconst utmTermRegex = /utm_term=([^&]+)/;\nconst utmTermMatch = url.match(utmTermRegex);\nconst utmTerm = utmTermMatch ? decodeURIComponent(utmTermMatch[1]) : null;\n\nreturn {utmSource, utmMedium, utmCampaign, utmTerm};"
+      },
+      "id": "00000000-0000-0000-0000-000000000004",
+      "name": "Verificar utm campanha9",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-784, 320],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const agora = new Date();\nconst mes = agora.getMonth(); \n\nconst marcadores = [\n  { mes: \"jan\", marcador: \"jan-25\" },\n  { mes: \"fev\", marcador: \"fev-25\" },\n  { mes: \"mar\", marcador: \"mar-25\" },\n  { mes: \"abr\", marcador: \"abr-25\" },\n  { mes: \"mai\", marcador: \"mai-25\" },\n  { mes: \"jun\", marcador: \"jun-25\" },\n  { mes: \"jul\", marcador: \"jul-25\" },\n  { mes: \"ago\", marcador: \"ago-25\" },\n  { mes: \"set\", marcador: \"set-25\" },\n  { mes: \"out\", marcador: \"out-25\" },\n  { mes: \"nov\", marcador: \"nov-25\" },\n  { mes: \"dez\", marcador: \"dez-25\" }\n];\n\nreturn {\n  json: {\n    marcador: marcadores[mes].marcador\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1104, 304],
+      "id": "00000000-0000-0000-0000-000000000005",
+      "name": "Marcador - Mes8"
+    },
+    {
+      "parameters": {
+        "url": "=https://SEU_DOMINIO.com/api/v1/accounts/1/conversations/{{ $('Abrir conversa').item.json.payload.conversation_id }}\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "SEU_TOKEN_AQUI"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000006",
+      "name": "Pegar ID Contato8",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1424, 320],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [784, 32],
+      "id": "00000000-0000-0000-0000-000000000007",
+      "name": "Wait11",
+      "webhookId": "SEU_WEBHOOK_ID_AQUI"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1168, 32],
+      "id": "00000000-0000-0000-0000-000000000008",
+      "name": "Wait12",
+      "webhookId": "SEU_WEBHOOK_ID_AQUI"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1488, 32],
+      "id": "00000000-0000-0000-0000-000000000009",
+      "name": "Wait13",
+      "webhookId": "SEU_WEBHOOK_ID_AQUI"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1952, 32],
+      "id": "00000000-0000-0000-0000-000000000010",
+      "name": "Wait14",
+      "webhookId": "SEU_WEBHOOK_ID_AQUI"
+    },
+    {
+      "parameters": {
+        "jsCode": "const idioma = $node[\"Formulario - Site9\"].json.body[\"mauticform[idioma]\"]?.toLowerCase?.() || 'ingles';\nconst nome = $node[\"Formulario - Site9\"].json.body[\"mauticform[nome]\"];\nconst empresa = $node[\"Formulario - Site9\"].json.body[\"mauticform[company]\"];\n\nlet content = '';\n\nswitch (idioma) {\n  case 'ingles':\n    content = `Hi ${nome}, how are you? 😊\\nI'm the support bot from ${empresa}. I received your message through our website and I'm already transferring it to our team. 🚀\\nIn the meantime, could you tell us a bit more about what you're looking for? That way, we can help you in a much more personalized way!`;\n    break;\n\n  case 'espanhol':\n    content = `Hola ${nome}, ¿cómo estás? 😊\\nSoy el bot de atención de ${empresa}. Recibí tu mensaje a través de nuestro sitio web y ya lo estoy transfiriendo a nuestro equipo. 🚀\\nMientras tanto, ¿podrías contarnos un poco más sobre lo que estás buscando? ¡Así podremos ayudarte de una forma mucho más personalizada!`;\n    break;\n\n  case 'frances':\n    content = `Bonjour ${nome}, comment ça va ? 😊\\nJe suis le bot de support de ${empresa}. J'ai reçu votre message via notre site web et je le transfère déjà à notre équipe. 🚀\\nEn attendant, pourriez-vous nous en dire un peu plus sur ce que vous recherchez ? Cela nous aidera à vous accompagner de manière plus personnalisée !`;\n    break;\n\n  case 'alemao':\n    content = `Hallo ${nome}, wie geht es dir? 😊\\nIch bin der Support-Bot von ${empresa}. Ich habe deine Nachricht über unsere Website erhalten und leite sie bereits an unser Team weiter. 🚀\\nIn der Zwischenzeit könntest du uns ein bisschen mehr darüber erzählen, wonach du suchst? So können wir dir viel persönlicher helfen!`;\n    break;\n\n  case 'italiano':\n    content = `Ciao ${nome}, come stai? 😊\\nSono il bot di supporto di ${empresa}. Ho ricevuto il tuo messaggio tramite il nostro sito web e lo sto già trasferendo al nostro team. 🚀\\nNel frattempo, potresti dirci qualcosa in più su ciò che stai cercando? Così potremo aiutarti in modo molto più personalizzato!`;\n    break;\n\n  default:\n    content = `Hi ${nome}, how are you? 😊\\nI'm the support bot from ${empresa}. I received your message through our website and I'm already transferring it to our team. 🚀\\nIn the meantime, could you tell us a bit more about what you're looking for? That way, we can help you in a much more personalized way!`;\n    break;\n}\n\nreturn [\n  {\n    json: {\n      content\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-496, 320],
+      "id": "00000000-0000-0000-0000-000000000011",
+      "name": "content - idioma"
+    },
+    {
+      "parameters": {
+        "jsCode": "const numero = $node[\"Formulario - Site9\"].json.body[\"mauticform[telefone]\"];\n\nconst numeroLimpo = numero.replace(/[\\s\\r\\n\\t]+/g, '');\n\nreturn {\n  json: {\n    telefone_limpo: numeroLimpo\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-304, 288],
+      "id": "00000000-0000-0000-0000-000000000012",
+      "name": "limpar telefone"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ddiMap = {\n  espanhol: \"+595\",\n  ingles: \"+44\",\n  frances: \"+33\",\n  alemao: \"+49\"\n};\n\nreturn items.map(item => {\n  let telefone = $('limpar telefone').first().json.telefone_limpo;\n  const idioma = ($('Formulario - Site9').first().json.body[\"mauticform[idioma]\"] || \"\").toLowerCase();\n\n  const e164Regex = /^\\+[1-9]\\d{9,14}$/;\n\n  if (!e164Regex.test(telefone)) {\n    telefone = telefone.replace(/\\D/g, \"\");\n    const ddi = ddiMap[idioma] || \"+55\";\n    if (ddi && !telefone.startsWith(ddi.replace(\"+\", \"\"))) {\n      telefone = ddi + telefone;\n    }\n  }\n\n  item.json[\"mauticform[telefone]\"] = telefone;\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-160, -16],
+      "id": "00000000-0000-0000-0000-000000000013",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  protocolo: Math.floor(100000 + Math.random() * 900000)\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [512, -304],
+      "id": "00000000-0000-0000-0000-000000000014",
+      "name": "Random id3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU_DOMINIO.com/api/v1/accounts/1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "SEU_TOKEN_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"inbox_id\": \"SEU_INBOX_ID\",\n  \"contact\": {\n    \"name\": \"{{ $node[\"Dados Usuario9\"].json.name }}\",\n    \"phone_number\": \"{{ $node[\"Dados Usuario9\"].json.phone }}\"\n  },\n  \"message\": {\n    \"template_params\": {\n      \"name\": \"cadastro_utility_en\",\n      \"category\": \"MARKETING\",\n      \"language\": \"en_US\",\n      \"processed_params\": {\n        \"1\": \"{{ $node[\"Dados Usuario9\"].json.name }}\",\n        \"2\": \"{{ $json.protocolo }}\"\n      }\n    }\n  }\n}\n",
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000015",
+      "name": "Criar conversa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [896, -288],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU_DOMINIO.com/api/v1/accounts/1/conversations/{{ $json.conversation_id }}/toggle_status\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "SEU_TOKEN_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"status\":\"open\"\n}",
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000016",
+      "name": "Abrir conversa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [848, 304],
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU_DOMINIO.com/api/v1/accounts/1/contacts/{{ $json.meta.sender.id }}/labels",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "SEU_TOKEN_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"labels\": [\"{{ $('Marcador - Mes8').item.json.marcador }}\"]\n} ",
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000017",
+      "name": "Marcador  - Tag",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1744, 320],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SEU_DOMINIO.com/api/v1/accounts/1/crm/leads/form_create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "crm_access_token",
+              "value": "SEU_CRM_TOKEN_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $('Dados Usuario9').item.json.name }}\",\n  \"email\": \"{{ $('Dados Usuario9').item.json.email }}\",\n  \"phone_number\": \"{{ $('Dados Usuario9').item.json.phone }}\",\n  \"stage_id\": 2,\n  \"utm_source\":\"{{ $('Dados Usuario9').item.json.utm_source }}\",\n  \"utm_medium\":\"{{ $('Dados Usuario9').item.json.utm_medium }}\",\n  \"utm_campaign\":\"{{ $('Dados Usuario9').item.json.utm_campaign }}\",\n  \"utm_term\":\"{{ $('Dados Usuario9').item.json.utm_term }}\",\n  \"description\":\"Cidade:{{ $('Dados Usuario9').item.json.city }}, Qtde usuários: {{ $('Dados Usuario9').item.json.numberTeam }}, Conversa iniciada:{{ $('Criar conversa').item.json.conversation_id }}\"\n}\n",
+        "options": {}
+      },
+      "id": "00000000-0000-0000-0000-000000000018",
+      "name": "Adicionar CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2112, 320],
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "Formulario - Site9": [
+      {
+        "json": {
+          "headers": {
+            "host": "integra.exemplo.com",
+            "x-request-id": "00000000000000000000000000000000",
+            "x-real-ip": "0.0.0.0",
+            "x-forwarded-for": "0.0.0.0",
+            "x-forwarded-host": "integra.exemplo.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-scheme": "https",
+            "x-scheme": "https",
+            "x-original-forwarded-for": "0.0.0.0",
+            "content-length": "690",
+            "user-agent": "WordPress/6.8.2; https://exemplo.com/es",
+            "content-type": "application/x-www-form-urlencoded",
+            "accept-encoding": "gzip, br",
+            "cf-ray": "00000000000000000-XXX",
+            "accept": "*/*",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "0.0.0.0",
+            "cf-ipcountry": "US",
+            "cf-visitor": "{\"scheme\":\"https\"}"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "mauticform[nome]": "NOME EXEMPLO",
+            "mauticform[email]": "exemplo@email.com",
+            "mauticform[cidade]": "Ciudad Del Este",
+            "mauticform[telefone]": "0000000000",
+            "mauticform[equipe]": "5",
+            "mauticform[company]": "Empresa Exemplo",
+            "mauticform[inbox]": "00000",
+            "mauticform[idioma]": "espanhol",
+            "Fecha": "16 de septiembre de 2025",
+            "Hora": "12:57",
+            "URL de la página": "https://exemplo.com/es/#prueba-gratuita",
+            "Agente de usuario": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+            "IP remota": "0000:0000:0000:0000:0000:0000:0000:0000",
+            "Funciona con": "Elementor",
+            "form_id": "0000000",
+            "form_name": "Nuevo formulario"
+          },
+          "webhookUrl": "https://integra.exemplo.com/webhook/leads-idiomas",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Dados Usuario9": {
+      "main": [
+        [
+          {
+            "node": "Random id3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formulario - Site9": {
+      "main": [
+        [
+          {
+            "node": "Verificar utm campanha9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar utm campanha9": {
+      "main": [
+        [
+          {
+            "node": "content - idioma",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcador - Mes8": {
+      "main": [
+        [
+          {
+            "node": "Pegar ID Contato8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pegar ID Contato8": {
+      "main": [
+        [
+          {
+            "node": "Marcador  - Tag",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait11": {
+      "main": [
+        [
+          {
+            "node": "Abrir conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait12": {
+      "main": [
+        [
+          {
+            "node": "Pegar ID Contato8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait13": {
+      "main": [
+        [
+          {
+            "node": "Marcador  - Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait14": {
+      "main": [
+        [
+          {
+            "node": "Adicionar CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "content - idioma": {
+      "main": [
+        [
+          {
+            "node": "limpar telefone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpar telefone": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Dados Usuario9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random id3": {
+      "main": [
+        [
+          {
+            "node": "Criar conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar conversa": {
+      "main": [
+        [
+          {
+            "node": "Abrir conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Abrir conversa": {
+      "main": [
+        [
+          {
+            "node": "Marcador - Mes8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcador  - Tag": {
+      "main": [
+        [
+          {
+            "node": "Adicionar CRM",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adicionar CRM": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "00000000-0000-0000-0000-000000000000",
+  "meta": {
+    "instanceId": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "id": "WORKFLOW_ID",
+  "tags": []
+}
